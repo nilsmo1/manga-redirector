@@ -3,7 +3,7 @@ Script that redirects you to a site where you can read a specified manga
 
 Links to the APIs used:
 [`AniList API`](https://anilist.gitbook.io/anilist-apiv2-docs/)
-<-- [`MangaDex API`](https://api.mangadex.org/docs/) --/>
+[`MangaDex API`](https://api.mangadex.org/docs/) (not implemented yet)
 
 # Usage
 Just clone, run `make install`, paste your AniList username into the `name.json` file, and everything should solve itself.
