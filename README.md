@@ -2,6 +2,7 @@
 Script that redirects you to a site where you can read a specified manga
 
 Links to the APIs used:
+
 [`AniList API`](https://anilist.gitbook.io/anilist-apiv2-docs/)
 
 [`MangaDex API`](https://api.mangadex.org/docs/) (not implemented yet)
