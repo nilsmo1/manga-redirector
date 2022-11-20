@@ -1,4 +1,4 @@
-# manga-redirector-v2
+# manga-redirector
 Script that redirects you to a site where you can read a specified manga
 
 Links to the APIs used:
