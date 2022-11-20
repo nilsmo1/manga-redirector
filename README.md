@@ -19,5 +19,8 @@ you then also have to insert your AniList `<username>` into the generated `name.
 ```json
 { "name": "<username>" } 
 ```
+
+However, since the executable is moved to `~/.local/bin/`, if it is not in your `$PATH`, you should add it - otherwise bash will not be able to find the file.
+
 For help, run `manga-redirector -h/--help`.
 

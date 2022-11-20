@@ -9,6 +9,8 @@ if ./main.py \$@; then
 fi
 cd - > /dev/null 2>&1" > "$dir/$bin"
 
+mkdir -p ~/.local/bin
+
 echo 'Creating executable..' && chmod +x "$bin" \
 && echo 'Moving executable to ~/.local/bin/ ..' && mv "$bin" ~/.local/bin/ \
 && echo 'Generating name.json..' && echo '{ "name" : "" }' > "name.json" || echo "Something went wrong!"
