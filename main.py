@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Library imports
 import json
 import os
@@ -18,18 +19,23 @@ def read_local_storage(storage_filename: str) -> List[Manga]:
     return [Manga.parse_from_storage(raw) for raw in data]
 
 def validate_file(filename: str) -> bool:
-    return os.path.exists(filename) and os.path.getsize(filename) > 0
+    return os.path.exists(filename) 
 
 def get_name() -> str:
     with open('name.json') as preset:
-        name = json.load(preset)['name']
+        try: 
+            name = json.load(preset)['name']
+            if not name: return None
+        except: return None
     return name
 
 def main() -> None:
     '''
     Main function
     '''
-    if not args.title: return
+    if not args.title: 
+        print("No title given!")
+        sys.exit(1)
     title    = ' '.join(arg.capitalize() for arg in args.title)
     fuzzy    = args.fuzzy
     search   = args.search
@@ -41,14 +47,16 @@ def main() -> None:
     
     if search:
         redirect_search(title, site)
-        sys.exit(0)
 
     name_filename = 'name.json'
     if not validate_file(name_filename):
-        print('No name given, exiting..')
-        return
+        print('No name.json file found, exiting..')
+        sys.exit(1)
 
     profile_name = get_name()
+    if get_name() is None:
+        print('No name inserted into name.json file!')
+        sys.exit(1)
 
     # if there is no local storage, refresh and create a list of manga, also store the list
     storage_filename = 'stored.json'
@@ -61,15 +69,16 @@ def main() -> None:
     manga = get_manga(title, manga_list, fuzzy)
     if manga is None:
         print(f'Manga "{title}" not found!')
-        return
+        print('Redirecting to search instead..')
+        redirect_search(title, site)
+
     # get the redirection information and redirect
     redirection_info = get_redirect_info(manga, chapter, language, site)
     if redirection_info['title'] is None:
         print(f'Sorry, the manga "{title}" does not have an available title in "{language}"!')
-        return
+        sys.exit(1)
 
     redirect(redirection_info)
-    sys.exit(0)
 
 if __name__ == '__main__':
     main()

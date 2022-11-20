@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import NamedTuple, Optional, List, Dict, Any
+import sys
 
 from .Types import JSONtype
 
@@ -50,9 +51,13 @@ class Manga(NamedTuple):
         Return a list of parsed Manga instances
         '''
         manga_list: List[Manga]=[]
-        data  = raw['data']
-        mlc   = data['MediaListCollection']
-        lists = mlc['lists']
+        try:
+            data  = raw['data']
+            mlc   = data['MediaListCollection']
+            lists = mlc['lists']
+        except TypeError as TE:
+            print("Something went wrong... It could be that your name.json file is incorrect in some way!")
+            sys.exit(1)
         for m_list in lists:
             entries = m_list['entries']
             for entry in entries:

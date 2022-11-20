@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+dir=$(pwd)
+bin="manga-redirector"
+
+echo "#!/usr/bin/env bash
+cd $(pwd)
+if ./main.py \$@; then
+    xdg-open \$(./main.py \$@ | tail -n 1) > /dev/null 2>&1 &
+fi
+cd - > /dev/null 2>&1" > "$dir/$bin"
+
+echo 'Creating executable..' && chmod +x "$bin" \
+&& echo 'Moving executable to ~/.local/bin/ ..' && mv "$bin" ~/.local/bin/ \
+&& echo 'Generating name.json..' && echo '{ "name" : "" }' > "name.json" || echo "Something went wrong!"

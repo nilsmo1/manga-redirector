@@ -1,6 +1,7 @@
 import requests   as rq
 import webbrowser as wb
 from typing import Optional, List, Union
+import sys
 
 from .Manga import Manga
 from .query import query
@@ -12,7 +13,7 @@ def format_title(title: str) -> str:
     return ' '.join(word.capitalize() for word in title.split() if word) 
 
 def get_correct_chapter(chapter: int, progress: int) -> int:
-    return progress+1 if chapter < 0 else chapter
+    return progress+1 if chapter <= 0 else chapter
 
 def get_manga(title: str, manga_list: List[Manga], fuzzy: bool) -> Optional[Manga]:
     if not fuzzy:
@@ -45,6 +46,10 @@ def get_redirect_info(manga: Manga, chapter: int, language: str, site: str) -> R
     title = manga.titles[language]
     progress = manga.progress
     correct_chapter = get_correct_chapter(chapter, progress)
+    if manga.chapters is not None:
+        if manga.chapters < correct_chapter:
+            print(f'You have read every chapter of {title}!')
+            correct_chapter = manga.chapters
     return {
         'title'   : title,
         'chapter' : correct_chapter,
@@ -53,8 +58,9 @@ def get_redirect_info(manga: Manga, chapter: int, language: str, site: str) -> R
 
 def redirect_search(title: str, site: str) -> None:
     url = create_search_url(title, site)
-    print(f'''SEARCH:\n\t{url=}\n\t{title=}\n\t{site=}''')
-    wb.open(url) 
+    print(f'Searching for {title!r} on {site}.')
+    print(url)
+    sys.exit(0)
 
 
 def redirect(info: RedirectInfo) -> None:
@@ -62,5 +68,6 @@ def redirect(info: RedirectInfo) -> None:
     title    = info['title']
     chapter  = info['chapter']
     url = create_url(title, chapter, site)
-    print(f'''READ:\n\t{url=}\n\t{title=}\n\t{chapter=}\n\t{site=}''')
-    wb.open(url)
+    print(f'Redirecting to:\n\t{title}, chapter {chapter}, on {site}.')
+    print(url)
+    sys.exit(0)
